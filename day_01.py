@@ -1,8 +1,11 @@
 """
 12/06/2020
-Day 1 - Part 1
-Find the two entries that sum to 2020 and then multiply those two numbers together.
+Day 1
 """
+
+#*************************************************************************************************#
+# Part 1: Find the two entries that sum to 2020 and then multiply those two numbers together.     #
+#*************************************************************************************************#
 
 import numpy as np
 
@@ -16,12 +19,9 @@ with open('day_01.txt') as f:
 print(f'The two entries are: {result}')
 print(f'Their product is : {np.prod(result)}')
 
-"""
-12/06/2020
-Day 1 - Part 2
-Find the three entries that sum to 2020 and then multiply those three numbers together.
-"""
-import numpy as np
+#*************************************************************************************************#
+# Part 2: Find the three entries that sum to 2020 and then multiply those three numbers together. #
+#*************************************************************************************************#
 
 result = []
 with open('day_01.txt') as f:
