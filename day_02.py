@@ -17,7 +17,7 @@ def valid_1(lines):
         character = character.strip(':')
         if condition_1 <= password.count(character) <= condition_2:
             count += 1
-    print(count)
+    return count
 
 #*************************************************************************************************#
 # Part 2: Each policy actually describes two positions in the password,                           #
@@ -37,7 +37,7 @@ def valid_2(lines):
         if (password[condition_1 - 1] == character or password[condition_2 - 1] == character) and \
            password[condition_1 - 1] != password[condition_2 - 1]:
             count += 1
-    print(count)
+    return count
 
 with open('day_02.txt') as f:
     lst = [x.strip('\n') for x in f.readlines()]
