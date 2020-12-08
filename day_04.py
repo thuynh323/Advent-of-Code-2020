@@ -43,7 +43,7 @@ def valid_1(lines):
 #*************************************************************************************************#
 
 import re
-class Passport():
+class Passport:
     def __init__(self, passport):
         self.passport = passport
         
