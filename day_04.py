@@ -7,7 +7,6 @@ Day 4: Passport Processing
 # Part 1: Count the number of valid passports - those that have all required fields.              #
 # Treat cid as optional. In your batch file, how many passports are valid?                        #
 #*************************************************************************************************#
-
 def valid_1(lines):
     count = 0
     for l in lines:
@@ -42,8 +41,9 @@ def valid_1(lines):
 #   pid (Passport ID) - a nine-digit number, including leading zeroes.                            #
 #   cid (Country ID) - ignored, missing or not.                                                   #
 #*************************************************************************************************#
-   
-  class Passport():
+
+import re
+class Passport():
     def __init__(self, passport):
         self.passport = passport
         
@@ -131,7 +131,6 @@ def valid_2(lines):
         if 'invalid' not in cond_list:
             count += 1
     return count
-  
- with open('day_04.txt') as f:
+with open('day_04.txt') as f:
     lst = f.read().split('\n\n')
-    print(f'Number of valid passports according to the strict system: {valid_2(lst)}')    
+    print(f'Number of valid passports from the strict system: {valid_2(lst)}')
