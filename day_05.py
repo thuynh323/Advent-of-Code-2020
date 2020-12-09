@@ -20,6 +20,7 @@ Day 5: Binary Boarding
 # on a boarding pass?                                                                             #
 #*************************************************************************************************#
 
+from statistics import median
 def find_seat(lines):
     row = []
     col = []
