@@ -44,5 +44,5 @@ with open('day_06.txt') as f:
     lst = f.read().split('\n\n')
     group_mem = []
     for l in lst:
-        group_mem.append(l.split('\n'))
+        group_mem.append(l.strip('\n').split('\n'))
     print(f'Number of questions answered by every member: {count_question(group_mem)}')
