@@ -22,8 +22,8 @@ def valid_1(lines):
         if sum(cond_list) == 8 or (sum(cond_list) == 7 and cid == 0):
                 count += 1
     return count
-    
- with open('day_04.txt') as f:
+ 
+with open('day_04.txt') as f:
     lst = f.read().split('\n\n')
     print(f'Number of valid passports according to the naive system: {valid_1(lst)}')   
    
