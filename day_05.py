@@ -66,5 +66,5 @@ def find_seat(lines):
     print(f'My seat ID is: {median(set(missing_seat))}')
     
 with open('day_05.txt') as f:
-    lst = f.read().split('\n')
+    lst = [x.strip('\n') for x in f.readlines()]
     find_seat(lst)
