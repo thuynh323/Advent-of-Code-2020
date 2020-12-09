@@ -10,26 +10,27 @@ Day 6: Custom Customs
 
 import re
 def count_char(lines):
-    count = 0
+    lst = []
     for l in lines:
-        char = set(re.findall(r'\w', l))
+        val = l.split('\n')
+        lst.append(''.join(val))
+    
+    count = 0
+    for i in lst:
+        char = set(re.findall(r'\w', i))
         count += len(char)
     return count
-        
-with open('day_06.txt') as f:
-    lst1 = f.read().split('\n\n')
-    lst2 = []
-    for l in lst1:
-        val = l.split('\n')
-        lst2.append(''.join(val))
-    print(f'Number of answers: {count_char(lst2)}')
     
 #*************************************************************************************************#
 # Part 2: For each group, count the number of questions to which everyone answered "yes".         #
 # What is the sum of those counts?                                                                #
 #*************************************************************************************************#
 
-def count_question(groups):
+def count_question(lines):
+    groups = []
+    for l in lines:
+        groups.append(l.strip('\n').split('\n'))
+    
     count = 0
     for g in groups:
         num_mem = len(g)
@@ -39,10 +40,8 @@ def count_question(groups):
             if all_q.count(char[i]) == num_mem:
                 count += 1
     return count
-
+        
 with open('day_06.txt') as f:
     lst = f.read().split('\n\n')
-    group_mem = []
-    for l in lst:
-        group_mem.append(l.strip('\n').split('\n'))
-    print(f'Number of questions answered by every member: {count_question(group_mem)}')
+    print(f'Number of answers: {count_char(lst)}')
+    print(f'Number of questions answered by every member: {count_question(lst)}')
