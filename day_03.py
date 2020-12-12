@@ -22,27 +22,24 @@ Day 3: Toboggan Trajectory
 #*************************************************************************************************#
 
 def count_tree(lines, down: 'int', right: 'int'):
-    x = 0
+    fall = 0
     run = 0
-    width = len(lines[0])
-    height = len(lines)
+    width = len(lines[0])  # 31
+    height = len(lines)    # 323
     count = 0
-    while x + down <= height:
-        if run < width:
-            if lines[x][run] == '#':
-                count += 1
-            x += down
-            run += right
-        else:
-            new_line = lines[x]*(run - width + 2)
-            if new_line[run] == '#':
-                count += 1
-            x += down
-            run += right
+    while fall <= height - 1: # 0th to 321st index
+        if run <= width - 1:  # 0th to 30th index
+            if lines[fall][run] == '#':
+                count += 1       
+        else: # From 33th index
+            run = run - width # Reset index moving back to the beginning
+            if lines[fall][run] == '#':
+                count += 1                     
+        fall += down
+        run += right
     return count
     
 with open('day_03.txt') as f:
-    with open('day_03.txt') as f:
     lst = [x.strip('\n') for x in f.readlines()]
     print(f'Part 1: {count_tree(lst,1,3)}')
     print(f'Part 2: {count_tree(lst,1,1)*count_tree(lst,1,3)*count_tree(lst,1,5)*count_tree(lst,1,7)*count_tree(lst,2,1)}')
