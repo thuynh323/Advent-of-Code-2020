@@ -27,7 +27,7 @@ def count_tree(lines, down: 'int', right: 'int'):
     width = len(lines[0])  # 31
     height = len(lines)    # 323
     count = 0
-    while fall <= height - 1: # 0th to 321st index
+    while fall <= height - 1: # 0th to 322nd index
         if run <= width - 1:  # 0th to 30th index
             if lines[fall][run] == '#':
                 count += 1       
