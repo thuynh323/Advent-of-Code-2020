@@ -43,94 +43,46 @@ with open('day_04.txt') as f:
 #*************************************************************************************************#
 
 import re
-class Passport:
-    def __init__(self, passport):
-        self.passport = passport
-        
-    def birthyear(self):
-        byr_val = re.findall(r'(?<=byr:)\d+', self.passport)
-        if byr_val:
-            if 1920 <= int(byr_val[0]) <= 2002:
-                return int(byr_val[0])
-            else:
-                return 'invalid'
-        else:
-            return 'invalid'
-            
-    def issueyear(self):
-        iyr_val = re.findall(r'(?<=iyr:)\d+', self.passport)
-        if iyr_val:
-            if 2010 <= int(iyr_val[0]) <= 2020:
-                return int(iyr_val[0])
-            else:
-                return 'invalid'
-        else:
-            return 'invalid'
-            
-    def expyear(self):
-        eyr_val = re.findall(r'(?<=eyr:)\d+', self.passport)
-        if eyr_val:
-            if 2020 <= int(eyr_val[0]) <= 2030:
-                return int(eyr_val[0])
-            else:
-                return 'invalid'
-        else:
-            return 'invalid'
-            
-    def height(self):
-        hgt_val = re.findall(r'(\d+cm|\d+in)', self.passport)
-        if hgt_val:
-            hgt_num = int(re.search(r'^\d+', hgt_val[0]).group())
-            hgt_uni = re.search(r'\D+$', hgt_val[0]).group()
-            if (hgt_uni == 'cm' and 150 <= hgt_num <= 193) or \
-               (hgt_uni == 'in' and 59 <= hgt_num <= 76):
-                return hgt_num, hgt_uni
-            else:
-                return 'invalid'
-        else:
-            return 'invalid'
-            
-    def haircolor(self):
-        hcl_val = re.findall(r'(?<=hcl:)#[a-f0-9]+', self.passport)
-        if hcl_val:
-            if len(hcl_val[0]) == 7:
-                return hcl_val[0]
-            else:
-                return 'invalid'
-        else:
-            return 'invalid'
-            
-    def eyecolor(self):
-        ecl_val = re.findall(r'(?<=ecl:)(amb|blu|brn|gry|grn|hzl|oth)', self.passport)
-        if ecl_val:
-            return ecl_val[0]
-        else:
-            return 'invalid'
-            
-    def passportid(self):
-        pid_val = re.findall(r'(?<=pid:)[0-9]+', self.passport)
-        if pid_val:
-            if len(pid_val[0]) == 9:
-                return pid_val[0]
-            else:
-                return 'invalid'
-        else:
-            return 'invalid'          
-
 def valid_2(lines):
     count = 0
     for l in lines:
-        byr = Passport(l).birthyear()
-        iyr = Passport(l).issueyear()
-        eyr = Passport(l).expyear()
-        hgt = Passport(l).height()
-        hcl = Passport(l).haircolor()
-        ecl = Passport(l).eyecolor()
-        pid = Passport(l).passportid()
-        cond_list = [byr, iyr, eyr, hgt, hcl, ecl, pid]
-        if 'invalid' not in cond_list:
-            count += 1
+        byr = re.findall(r'(?<=byr:)\d+', l)
+        iyr = re.findall(r'(?<=iyr:)\d+', l)
+        eyr = re.findall(r'(?<=eyr:)\d+', l)
+        hgt = re.findall(r'(\d+cm|\d+in)', l)
+        hcl = re.findall(r'(?<=hcl:)#[a-f0-9]+', l)
+        ecl = re.findall(r'(?<=ecl:)(amb|blu|brn|gry|grn|hzl|oth)', l)
+        pid = re.findall(r'(?<=pid:)[0-9]+', l)
+        if byr and 1920 <= int(byr[0]) <= 2002: byr = int(byr[0])
+        else: continue
+        
+        if iyr and 2010 <= int(iyr[0]) <= 2020: iyr = int(iyr[0])
+        else: continue
+        
+        if eyr and 2020 <= int(eyr[0]) <= 2030: eyr = int(eyr[0])
+        else: continue
+            
+        if hgt:
+            hgt_num = int(re.search(r'^\d+', hgt[0]).group())
+            hgt_uni = re.search(r'\D+$', hgt[0]).group()
+            if (hgt_uni == 'cm' and 150 <= hgt_num <= 193) or \
+               (hgt_uni == 'in' and 59 <= hgt_num <= 76):
+                hgt = (hgt_num, hgt_uni)
+            else: continue
+        else: continue
+            
+        if hcl and len(hcl[0]) == 7: hcl = hcl[0]
+        else: continue
+        
+        if ecl: ecl = ecl[0]
+        else: continue
+            
+        if pid and len(pid[0]) == 9: pid = pid[0]
+        else: continue  
+
+        count += 1
     return count
+
 with open('day_04.txt') as f:
     lst = f.read().split('\n\n')
     print(f'Number of valid passports from the strict system: {valid_2(lst)}')
