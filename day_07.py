@@ -1,48 +1,57 @@
-import re
-class Bag:
-    def __init__(self, rules, color):
-        self.rules = rules
-        self.color = color
-        
-    def parent(self):
-        parent_bags = []
-        for r in self.rules:
-            if self.color in r:
-                color_list = re.findall(r'^\S+\s\S+(?= bags contain [0-9])', r)[0]
-                parent_bags.append(color_list)
-        if self.color in parent_bags:
-            parent_bags.remove(self.color)
-        return parent_bags
-        
-    def child(self):
-        child_color = []
-        child_num = []
-        for r in self.rules:
-            if re.findall(r'^\S+\s\S+(?= bags contain [0-9])', r) == [self.color]:
-                color_list = re.findall(r'(?<=[0-9] )\S+\s\S+', r)
-                child_color.append(color_list)
-                num_list = re.findall(r'\d+', r)
-                child_num.append(num_list)
-        child_color = [i for x in child_color for i in x]
-        child_num = [x for x in child_num if x != []]
-        child_num = [int(i) for x in child_num for i in x]
-        child_bags = {}
-        for k, v in zip(child_color, child_num):
-            child_bags[k] = v
-        return child_bags
+"""
+12/12/2020
+Day 7: Handy Haversacks
+"""
 
+import re
+def get_rules(rules):
+    bag_dict, all_bags = {}, {}
+    for r in rules:
+        container = re.findall(r'^\S+\s\S+(?= bags contain [0-9])', r)
+        if container:
+            parent = container[0]
+            child_list = re.findall(r'(?<=[0-9] )\S+\s\S+', r)
+            bag_dict[parent] = child_list
+            num_list = re.findall(r'\d+', r)
+            number = list(map(int, num_list))
+            all_bags[parent] = dict(zip(child_list, number))   
+        else:
+            continue 
+    return bag_dict, all_bags
+
+# bag_dict = {'pale cyan': ['posh black', 'wavy gold', 'vibrant brown'], 'dull lavender': ['pale tomato'],...}
+# all_bags = {'pale cyan': {'posh black': 2, 'wavy gold': 4, 'vibrant brown': 2}, 'dull lavender': {'pale tomato': 3},...}
+
+#*************************************************************************************************#
+# Part 1: How many bag colors can eventually contain at least one shiny gold bag?                 #
+#*************************************************************************************************#
+ 
 def count_parents(rules, color):
-    bags = Bag(rules, color).parent()
-    containers = []
-    for b in bags:
-        containers.append(Bag(rules, b).parent())
-        for bb in containers:
-            for bbb in bb:
-                containers.append(Bag(rules, bbb).parent())
-    containers = [x for x in containers if x != []]
-    containers = [i for x in containers for i in x]
-    return len(set(containers)) + len(bags)
-    
+    bag_dict = rules[0]
+    parent = [outer for outer, inner in bag_dict.items() if color in inner]     
+    for p in parent:
+        for outer, inner in bag_dict.items():
+            if p in inner:
+                parent.append(outer)
+    count = len(set(parent))   # Different outer bags may be contained in the same bag
+    return count
+
+#*************************************************************************************************#
+# Part 2: How many individual bags are required inside your single shiny gold bag?                #
+#*************************************************************************************************#
+
+def count_children(rules, color):
+    all_bags = rules[1]
+    count = 1
+    if color in all_bags:
+        children = all_bags[color]
+        for c in children:
+            multiplier = children[c]
+            count += multiplier*count_children(rules, c)
+    return count
+
 with open('day_07.txt') as f:
     lst = [x.strip('\n') for x in f.readlines()]
-    print(f"Number of bags that can contain at least one shiny gold bag: {count_parents(lst, 'shiny gold')}")
+    rules = get_rules(lst)
+    print(f"Number of bags that can contain at least one shiny gold bag: {count_parents(rules, 'shiny gold')}")
+    print(f"Number of bags that can be contained by one shiny gold bag: {count_children(rules, 'shiny gold') - 1}")
